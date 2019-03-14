@@ -1,0 +1,68 @@
+{
+  "name": "faq",
+  "version": "0.1.0",
+  "description": "Launcher development support FAQ",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Craftix/faq.git"
+  },
+  "keywords": [
+    "support",
+    "faq",
+    "launcher",
+    "minecraft",
+    "craftix",
+    "electron"
+  ],
+  "author": "Adrien 'Litarvan' Navratil <adrien1975@live.fr>",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Craftix/faq/issues"
+  },
+  "homepage": "https://github.com/Craftix/faq#readme",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "vue": "^2.6.6",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.0.3",
+    "@vue/cli-plugin-eslint": "^3.0.3",
+    "@vue/cli-service": "^3.0.3",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
