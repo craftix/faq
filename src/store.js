@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import decode from 'jwt-decode';
-import {API_URL, httpPost} from "./request";
+import { API_URL, httpPost } from "./request";
 
 Vue.use(Vuex);
 
