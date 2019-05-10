@@ -44,6 +44,45 @@
 </script>
 
 <style lang="scss">
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeueLight.woff") format("woff2");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeueLightItalic.woff") format("woff2");
+    font-weight: 400;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeue-Roman.woff") format("woff2");
+    font-weight: normal;
+  }
+
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeueItalic.woff") format("woff2");
+    font-weight: normal;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeueBold.woff") format("woff2");
+    font-weight: bold;
+  }
+
+  @font-face {
+    font-family: 'Helvetica-Neue';
+    src: url("./assets/fonts/HelveticaNeueBoldItalic.woff") format("woff2");
+    font-weight: bold;
+    font-style: italic;
+  }
+
   $nav-height: 75px;
 
   html, body {
@@ -53,7 +92,7 @@
 
   button {
     margin-right: 25px;
-    padding: 7px 14px;
+    padding: 6px 14px;
 
     background-color: #ddd;
     color: black;
@@ -73,7 +112,8 @@
     height: $nav-height;
     box-shadow: rgba(0, 0, 0, 0.3) 0 1px 3px -1px;
 
-    z-index: 3;
+    z-index: 10;
+    position: relative;
 
     display: flex;
     justify-content: space-between;
@@ -90,13 +130,14 @@
 
     #user {
       display: flex;
-      margin-right: 15px;
+      margin-right: 10px;
 
       #avatar {
-        height: $nav-height - 20px;
-        margin-right: 13px;
+        height: $nav-height - 22px;
+        margin-right: 14px;
 
         border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.2) 0 0 4px -1px;
       }
 
       #user-infos {
@@ -105,17 +146,13 @@
 
         margin-top: -1px;
 
-        #username {
-          margin-top: -2px;
-        }
-
         #logout {
-          font-size: 14px;
+          font-size: 13px;
 
           margin-top: 4px;
 
-          padding-top: 5px;
-          padding-bottom: 5px;
+          padding-top: 4px;
+          padding-bottom: 4px;
         }
       }
     }

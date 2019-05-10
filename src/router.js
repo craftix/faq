@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Home from './views/Home.vue';
+import Main from './views/Main.vue';
 import store from './store';
 
 Vue.use(Router);
@@ -11,7 +11,12 @@ const router = new Router({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Main
+    },
+    {
+      path: '/q/:id',
+      name: 'question',
+      component: Main
     }
   ]
 });
@@ -23,7 +28,7 @@ router.beforeEach((to, from, next) => {
   }
 
   const old = localStorage.getItem('old-path');
-  if (old) {
+  if (old && old !== 'undefined') {
     localStorage.removeItem('old-path');
     return next(old);
   }
