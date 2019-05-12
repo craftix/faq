@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import Add from './views/Add';
 import Main from './views/Main.vue';
 import store from './store';
 
@@ -17,6 +18,11 @@ const router = new Router({
       path: '/q/:id',
       name: 'question',
       component: Main
+    },
+    {
+      path: '/add',
+      name: 'add',
+      component: Add
     }
   ]
 });

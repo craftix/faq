@@ -34,6 +34,9 @@
                       </li>
                   </ul>
               </li>
+              <li class="category add">
+                  <router-link class="name" to="/add"><span class="plus">+</span> Ajouter une question</router-link>
+              </li>
           </ul>
       </div>
 
@@ -41,6 +44,7 @@
           <template v-if="id">
               <div id="sider">
                   <div id="edition">
+                      <font-awesome-icon icon="moon" />
                       <font-awesome-icon icon="pen" />
                       <font-awesome-icon icon="trash" />
                   </div>
@@ -52,30 +56,77 @@
 
               <h1>Launchwrapper introuvable <span class="id">#{{ id | upper }}</span></h1>
 
-              <h2>Erreur</h2>
+              <h2>Erreur (console)</h2>
 
-              <pre v-highlightjs><code>Erreur: impossible de trouver ou charger la classe principale (classe java)</code></pre>
+              <pre v-highlightjs><code class="hljs plain">Erreur: impossible de trouver ou charger la classe principale net.minecraft.&lt;*&gt;.&lt;*&gt;</code></pre>
 
               <h3>Variante 1 : Launchwrapper</h3>
-              <pre v-highlightjs><code>Erreur: impossible de trouver ou charger la classe principale net.minecraft.launchwrapper.Launch</code></pre>
-
-              Voir <u>Solution 1</u>
+              <pre v-highlightjs><code class="hljs plain">Erreur: impossible de trouver ou charger la classe principale net.minecraft.launchwrapper.Launch</code></pre>
 
               <h3>Variante 2 : Minecraft</h3>
-              <pre v-highlightjs><code>Erreur: impossible de trouver ou charger la classe principale net.minecraft.client.main.Main</code></pre>
+              <pre v-highlightjs><code class="hljs plain">Erreur: impossible de trouver ou charger la classe principale net.minecraft.client.main.Main</code></pre>
 
-              Voir <u>Solution 2</u>
+              <h2>Solution</h2>
 
-              <pre v-highlightjs>
-                  <code class="java">public void test() {
-  String o = "test";
-  System.out.println(5 + o);
+              <h3>Variante 1 : Launchwrapper</h3>
 
-  if (o.equals("yuu")) {
-      int[] a = new int[] {5};
-  }
-}</code>
-              </pre>
+              <p>
+                  Cette erreur est très courante, et peut résulter de deux choses. Pour commencer, avez-vous besoin de Forge ?
+              </p>
+
+              <h4>&rarr; Non je n'ai pas besoin de Forge</h4>
+
+              <p>
+                  Éditez le fichier Launcher.java.
+                  En haut, dans la déclaraiton du GameInfos, mettez "false" à la place de "true" comme ceci :
+              </p>
+
+              <pre v-highlightjs><code class="java">public static final GameInfos SC_INFOS = new GameInfos("Quelque chose", SC_VERSION, false, new GameTweak[] {});</code></pre>
+
+              <p>
+                  Relancez, le problème devrais être réglé.
+              </p>
+
+              <h4>&rarr; Oui j'ai besoin de Forge</h4>
+
+              <p>
+                  Cela vient alors d'une erreur dans la création du pack. Une solution serait d'utiliser le
+                  <router-link to="/pack">générateur de pack.</router-link>
+              </p>
+
+              <p>
+                  Sinon, l'erreur vient de l'absence d'une librairie appelée <i>Launchwrapper</i>. Pour confirmer,
+                  rendez-vous dans .nomduserveur/libs, et vérifiez qu'il n'y a aucune librairie appelée launchwrapper-(version).jar.
+                  Si elle est présente, l'erreur vient alors d'autre part et nous vous invitons à demander de l'aide sur le
+                  <a href="https://discord.gg/GRKbbpV">serveur de support</a>.
+              </p>
+
+              <p>
+                  Si vous n'avez pas de dossier libs/, ou qu'il est vide, cela vient d'une erreur de mise à jour, il faut alors
+                  regarder si il n'y a pas eu une erreur dans la console, ou que la mise à jour ne se soit simplement pas faite
+                  (ce que vous pourrez vérifier en regardant la présente de messages précédés de "[S-Update]" dans la console).
+              </p>
+
+              <p>
+                  Normalement, pour la création d'un pack, il faut clean son .minecraft, installer la version désirée depuis
+                  le launcher, fermer le jeu, installer forge, et surtout <b>lancer le jeu avec Forge</b>, avant de le fermer
+                  à nouveau et de prendre les fichiers. Si vous avez oublié de lancer le jeu <u>avec Forge</u>, launchwrapper n'existe
+                  alors pas, ce qui cause cette erreur. Recommencer la création du pack sans oublier cette étape, et l'erreur devrait
+                  être réglée.
+              </p>
+
+              <h3>Variante 2  : Minecraft</h3>
+
+              <p>
+                  Cela signifie que le JAR principal de Minecraft (normalement Minecraft.jar) est introuvable.
+                  Vérifiez dans le .nomduserveur si il est bien présent et qu'il fait une taille correcte.
+              </p>
+
+              <p>
+                  Si il est absent, regardez votre console, il se peut qu'il y ait eu un problème de mise à jour.
+                  Sinon, il est peut-être tout simplement absent de votre FTP, ou alors la mise à jour ne se fait tout simplement pas,
+                  ce que vous pourrez vérifier en regardant la présente de messages précédés de "[S-Update]" dans la console.
+              </p>
           </template>
       </div>
   </div>
@@ -84,6 +135,46 @@
 <script>
 export default {
     name: 'home',
+    data() {
+        return {
+            questions: [
+                {
+                    name: 'Lancement du jeu',
+                    content: [
+                        {
+                            id: 'LW-01',
+                            name: 'Launchwrapper introuvable'
+                        },
+                        {
+                            id: 'LW-02',
+                            name: 'Tweak class introuvable'
+                        }
+                    ]
+                },
+                {
+                    name: 'Mise à jour',
+                    content: [
+                        {
+                            id: 'SU-W01',
+                            name: '404 sur /panel'
+                        },
+                        {
+                            id: 'SU-W02',
+                            name: 'Gestionnaire de fichiers introuvable'
+                        },
+                        {
+                            id: 'SU-L01',
+                            name: '403 sur /Login'
+                        },
+                        {
+                            id: 'SU-L02',
+                            name: "'Bad server response'"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
     methods: {
         select(id) {
             this.$router.push('/q/' + id);
@@ -126,6 +217,8 @@ export default {
 
             border: none;
             outline: none;
+
+            font-size: 14px;
         }
 
         #categories {
@@ -138,6 +231,25 @@ export default {
 
             .category {
                 margin-bottom: 20px;
+
+                &.add {
+                    display: inline-block;
+
+                    .name {
+                        font-size: 15px;
+                        color: black;
+                    }
+
+                    .plus {
+                        font-size: 17px;
+                        vertical-align: 1px;
+                    }
+
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
 
                 .name {
                     font-weight: bold;
@@ -176,12 +288,19 @@ export default {
 
         font-family: 'Helvetica-Neue', 'Roboto', 'Arial', sans-serif;
 
+        overflow-y: auto;
+
         #sider {
             position: absolute;
-            top: 90px;
-            right: 20px;
+            top: 75px;
+            right: 15px;
+
+            padding: 15px;
 
             color: #888;
+            background: white;
+
+            border-bottom-left-radius: 8px;
 
             #edition {
                 text-align: right;
@@ -215,7 +334,7 @@ export default {
             font-size: 13px;
 
             border-radius: 4px;
-            background-color: #f8f8f8;
+            background-color: #f3f3f3;
 
             padding: 15px;
         }

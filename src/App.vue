@@ -1,8 +1,18 @@
 <template>
   <div id="app">
     <div id="nav">
-      <div id="logo">
-        ? F.A.Q.
+      <div id="left-nav">
+        <div id="logo">
+          <router-link to="/home">? F.A.Q.</router-link>
+        </div>
+
+        <router-link class="nav-el" to="/q/help">Aide</router-link>
+        <router-link class="nav-el" to="/analyst">Analyseur d'erreur</router-link>
+        <router-link class="nav-el" to="/pack">Générateur de pack</router-link>
+        <router-link class="nav-el" to="/pack">Téléchargements</router-link>
+        <router-link class="nav-el" to="/discord">Discord</router-link>
+        <router-link class="nav-el" to="/pack">Github</router-link>
+        <router-link class="nav-el" to="/about">À Propos</router-link>
       </div>
 
       <button v-if="!user" id="login" @click="login()">Se connecter</button>
@@ -44,44 +54,7 @@
 </script>
 
 <style lang="scss">
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeueLight.woff") format("woff2");
-    font-weight: 400;
-  }
-
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeueLightItalic.woff") format("woff2");
-    font-weight: 400;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeue-Roman.woff") format("woff2");
-    font-weight: normal;
-  }
-
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeueItalic.woff") format("woff2");
-    font-weight: normal;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeueBold.woff") format("woff2");
-    font-weight: bold;
-  }
-
-  @font-face {
-    font-family: 'Helvetica-Neue';
-    src: url("./assets/fonts/HelveticaNeueBoldItalic.woff") format("woff2");
-    font-weight: bold;
-    font-style: italic;
-  }
+  @import "fonts";
 
   $nav-height: 75px;
 
@@ -119,13 +92,41 @@
     justify-content: space-between;
     align-items: center;
 
-    #logo {
-      margin-left: 25px;
+    font-family: 'Roboto', 'Helvetica-Neue', 'Helvetica', 'Arial', sans-serif;
 
-      font-size: 32px;
-      font-weight: bold;
+    #left-nav {
+      display: flex;
+      align-items: center;
 
-      margin-top: -4px;
+      #logo {
+        margin-left: 25px;
+
+        font-size: 32px;
+        font-weight: bold;
+
+        margin-top: -4px;
+
+        font-family: 'Lato', 'Helvetica-Neue', 'Helvetica', 'Arial', sans-serif;
+
+        a {
+          color: black;
+          text-decoration: none;
+        }
+      }
+
+      .nav-el {
+        margin-left: 35px;
+        font-size: 16px;
+        font-weight: bold;
+
+        color: black;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
+      }
     }
 
     #user {
@@ -143,8 +144,6 @@
       #user-infos {
         display: flex;
         flex-direction: column;
-
-        margin-top: -1px;
 
         #logout {
           font-size: 13px;

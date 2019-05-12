@@ -1,6 +1,6 @@
 import store from './store';
 
-export const API_URL = window.location.host === '127.0.0.1' || window.location.host === 'localhost' ?
+export const API_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost' ?
                 'http://127.0.0.1:2627' : 'https://api.faq.litarvan.com';
 
 export function httpGet(path, params = {}) {
