@@ -238,6 +238,8 @@ export default {
                     .name {
                         font-size: 15px;
                         color: black;
+
+                        text-decoration: none;
                     }
 
                     .plus {
