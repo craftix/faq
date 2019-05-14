@@ -194,6 +194,8 @@ export default {
 </script>
 
 <style lang="scss">
+    @import '../viewer';
+
     #main {
         display: flex;
         height: calc(100vh - 75px);
@@ -283,14 +285,8 @@ export default {
 
     #content {
         width: 100%;
-        padding: 30px;
-        padding-top: 0;
 
-        box-sizing: border-box;
-
-        font-family: 'Helvetica-Neue', 'Roboto', 'Arial', sans-serif;
-
-        overflow-y: auto;
+        @include viewer();
 
         #sider {
             position: absolute;
@@ -322,23 +318,6 @@ export default {
                     font-style: italic;
                 }
             }
-        }
-
-        h1 .id {
-            color: #666;
-            font-style: italic;
-            font-weight: normal;
-
-            font-size: 26px;
-        }
-
-        code {
-            font-size: 13px;
-
-            border-radius: 4px;
-            background-color: #f3f3f3;
-
-            padding: 15px;
         }
     }
 </style>
