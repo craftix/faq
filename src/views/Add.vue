@@ -44,155 +44,49 @@
 
         <h2>{{ preview ? 'Aperçu' : 'Contenu' }} <button id="preview" @click="preview = !preview">{{ preview ? 'Contenu' : 'Aperçu'}}</button></h2>
 
-        <textarea id="editor" v-if="!preview" @keydown="editorKey" ref="editor"></textarea>
+        <textarea id="editor" v-model="text" v-if="!preview" @keydown="editorKey" ref="editor"></textarea>
         <div id="editor" class="preview" v-if="preview" v-html="result"></div>
     </div>
 </template>
 
 <script>
     import marked from 'marked';
+    import codify from '../codify';
 
     export default {
         name: 'add',
+        mounted() {
+            const save = localStorage.getItem('autosave');
+
+            if (save) {
+                this.text = save;
+            }
+
+            this.interval = setInterval(() => {
+                localStorage.setItem('autosave', this.text);
+            }, 5000);
+        },
+        destroyed() {
+            clearInterval(this.interval);
+        },
         data() {
             return {
+                interval: null,
                 categoryChoice: 'existing',
                 title: '',
                 id: '',
-                //text: '',
+                text: '',
                 preview: false,
                 result: ''
             };
         },
         methods: {
             editorKey(e) {
-                const a = this.$refs.editor.selectionStart;
-                const b = this.$refs.editor.selectionEnd;
-                const val = this.$refs.editor.value;
-                const set = a => this.$refs.editor.value = a;
-
-                if (a !== b) {
-                    if (e.key === 'Tab') {
-                        e.preventDefault();
-
-
-                    }
-
-                    return;
-                }
-
-                let spaces = 0;
-                let lastLinePos = 0;
-                for (const c in val) {
-                    if (val[c] === '\n' && c < a) {
-                        lastLinePos = parseInt(c) + 1; /// ??
-                    }
-                }
-
-                switch(e.key) {
-                    case 'Enter':
-                        e.preventDefault();
-
-                        for (let i = lastLinePos; i < b; i++) {
-                            if (val[i] === ' ') {
-                                spaces++;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        spaces = Math.floor(spaces / 4);
-
-                        if (a > 0 && val[a - 1] === '{' && val[a] === '}') {
-                            const shift = '\n' + '    '.repeat(spaces + 1) + '\n';
-
-                            set(this.$refs.editor.value = val.substring(0, a)
-                                + shift + '    '.repeat(spaces)
-                                + val.substring(b));
-
-                            this.$refs.editor.selectionEnd = a + shift.length -1;
-                            break;
-                            //spaces++;
-                        }
-
-                        set(val.substring(0, a)
-                            + '\n'
-                            + '    '.repeat(spaces)
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + spaces * 4 + 1;
-
-                        break;
-                    case 'Tab':
-                        e.preventDefault();
-                        const shift = ' '.repeat(4 - ((a - lastLinePos) % 4));
-
-                        set(val.substring(0, a)
-                            + shift
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + shift.length;
-
-                        break;
-                    case 'Backspace':
-                        e.preventDefault();
-
-                        for (let i = a - 1; i >= 0; i--) {
-                            if (val[i] === ' ' && spaces < 4) {
-                                spaces++;
-                            } else {
-                                break;
-                            }
-                        }
-
-                        const newPos = a - (spaces >= 4 ? 4 : 1);
-                        set(val.substring(0, newPos) + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = newPos;
-
-                        break;
-                    case '{':
-                        e.preventDefault();
-
-                        set(val.substring(0, a)
-                            + '{}'
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + 1;
-
-                        break;
-                    case '(':
-                        e.preventDefault();
-
-                        set(val.substring(0, a)
-                            + '()'
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + 1;
-
-                        break;
-
-                    case '"':
-                        e.preventDefault();
-
-                        set(val.substring(0, a)
-                            + '""'
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + 1;
-
-                        break;
-                    case "'":
-                        e.preventDefault();
-
-                        set(val.substring(0, a)
-                            + "''"
-                            + val.substring(b));
-
-                        this.$refs.editor.selectionEnd = a + 1;
-
-                        break;
-                }
+                codify(this.$refs.editor, e, val => this.text = val);
+            },
+            submit() {
+                clearInterval(this.interval);
+                localStorage.removeItem('autosave');
             }
         },
         watch: {
@@ -204,7 +98,7 @@
             preview(val) {
                 if (val) {
                     this.result = '<h1>' + (this.title || 'Titre' ) + ' <span class="id">#' + (this.id || 'ID-00').toUpperCase() + '</span></h1>'
-                        + marked(this.$refs.editor.value);
+                        + marked(this.text);
                 }
             }
         }
