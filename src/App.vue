@@ -74,6 +74,15 @@
     border-radius: 3px;
 
     transition: background-color 75ms ease;
+
+    &[disabled] {
+      color: #555;
+      background-color: #e8e8e8;
+
+      &:hover {
+        cursor: initial;
+      }
+    }
   }
 
   button:hover {

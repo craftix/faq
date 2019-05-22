@@ -48,7 +48,7 @@
         <div id="editor" class="preview" v-if="preview" v-html="result"></div>
 
         <div id="bottom-buttons">
-            <button>Enregistrer</button>
+            <button :disabled="text === ''">Enregistrer</button>
             <button>Annuler</button>
 
             <span id="saving" v-if="saving">Sauvegarde...</span>
@@ -236,6 +236,7 @@
         border-radius: 4px;
 
         flex: 2;
+        resize: none;
 
         font-size: 14px;
 
@@ -250,9 +251,10 @@
 
         #saving {
             color: #666;
-            margin-left: 15px;
+            margin-left: 10px;
 
-            font-size: 14px;
+            font-size: 15px;
+            font-family: 'Roboto', 'Helvetica Neue', 'Arial', sans-serif;
         }
     }
 </style>
