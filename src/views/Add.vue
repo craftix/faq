@@ -42,10 +42,17 @@
             </div>
         </div>
 
-        <h2>{{ preview ? 'Aperçu' : 'Contenu' }} <button id="preview" @click="preview = !preview">{{ preview ? 'Contenu' : 'Aperçu'}}</button></h2>
+        <h2>{{ preview ? 'Aperçu' : 'Contenu' }} <button id="preview" @click="preview = !preview">{{ preview ? 'Contenu' : 'Aperçu (CTRL+P)'}}</button></h2>
 
         <textarea id="editor" v-model="text" v-if="!preview" @keydown="editorKey" ref="editor"></textarea>
         <div id="editor" class="preview" v-if="preview" v-html="result"></div>
+
+        <div id="bottom-buttons">
+            <button>Enregistrer</button>
+            <button>Annuler</button>
+
+            <span id="saving" v-if="saving">Sauvegarde...</span>
+        </div>
     </div>
 </template>
 
@@ -63,11 +70,14 @@
             }
 
             this.interval = setInterval(() => {
-                localStorage.setItem('autosave', this.text);
-            }, 5000);
+                this.save();
+            }, 60000);
+
+            document.addEventListener('keydown', this.documentKey);
         },
         destroyed() {
             clearInterval(this.interval);
+            document.removeEventListener('keydown', this.documentKey);
         },
         data() {
             return {
@@ -77,11 +87,36 @@
                 id: '',
                 text: '',
                 preview: false,
-                result: ''
+                result: '',
+                lastSelect: null,
+                saving: false
             };
         },
         methods: {
+            save() {
+                if (!this.saving) {
+                    setTimeout(() => this.saving = false, 2000);
+                }
+
+                this.saving = true;
+                localStorage.setItem('autosave', this.text);
+            },
+            documentKey(e) {
+                if (e.ctrlKey && e.key === 'p') {
+                    e.preventDefault();
+                    this.preview = !this.preview;
+
+                    return;
+                }
+            },
             editorKey(e) {
+                if (e.ctrlKey && e.key === 's') {
+                    e.preventDefault();
+                    this.save();
+
+                    return;
+                }
+
                 codify(this.$refs.editor, e, val => this.text = val);
             },
             submit() {
@@ -97,8 +132,20 @@
             },
             preview(val) {
                 if (val) {
+                    this.lastSelect = [this.$refs.editor.selectionStart, this.$refs.editor.selectionEnd];
                     this.result = '<h1>' + (this.title || 'Titre' ) + ' <span class="id">#' + (this.id || 'ID-00').toUpperCase() + '</span></h1>'
                         + marked(this.text);
+                } else {
+                    if (this.lastSelect) {
+                        setTimeout(() => {
+                            this.$refs.editor.selectionStart = this.lastSelect[0];
+                            this.$refs.editor.selectionEnd = this.lastSelect[1];
+
+                            this.lastSelect = null;
+                        }, 100);
+                    }
+
+                    setTimeout(() => this.$refs.editor.focus(), 100);
                 }
             }
         }
@@ -194,6 +241,18 @@
 
         &.preview {
             @include viewer();
+        }
+    }
+
+    #bottom-buttons {
+        padding: 10px;
+        padding-bottom: 0;
+
+        #saving {
+            color: #666;
+            margin-left: 15px;
+
+            font-size: 14px;
         }
     }
 </style>
